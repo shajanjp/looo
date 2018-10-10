@@ -1,6 +1,5 @@
 function getColor(level){
   switch(level) {
-
     case "error":
     case 1:
     return "\x1b[31m";
@@ -13,26 +12,37 @@ function getColor(level){
     case 3: 
     return "\x1b[32m";
     
-    case "debug":
-    case 4: 
-    return "\x1b[35m"; 
-    
-    case "silly":
-    case 5: 
-    return "\x1b[37m";
-
     default: 
     return "\x1b[37m";
-
   }
 }
 
-
-let looo = function(data){
-  let color = getColor(arguments[arguments.length-1]); 
-  console.info(color, "custom logger", data);
+let looo = {
+  log: (...data) => {
+    return new Promise((resolve, reject) => {
+      console.log(...data);
+      resolve({});
+    });
+  },
+  info: (...data) => {
+    return new Promise((resolve, reject) => {
+      console.info(getColor("info"), ...data);
+      resolve({});
+    });
+  },
+  warn: (...data) => {
+    return new Promise((resolve, reject) => {
+      console.warn(getColor("warn"), ...data);
+      resolve({});
+    });
+  },
+  error: (...data) => {
+    return new Promise((resolve, reject) => {
+      console.error(getColor("error"), ...data);
+      resolve({});
+    });
+  }
 }
 
-global.console.log = looo;
-
+global.looo = looo;
 module.exports = looo;
