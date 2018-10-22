@@ -1,3 +1,5 @@
+const config = require('./sample-config.json');
+
 function getColor(level){
   switch(level) {
     case "error":
@@ -13,34 +15,37 @@ function getColor(level){
     return "\x1b[32m";
     
     default: 
-    return "\x1b[37m";
+    return "";
   }
 }
 
 let looo = {
   log: (...data) => {
-    return new Promise((resolve, reject) => {
-      console.log(...data);
-      resolve({});
-    });
+    if(config.log.console)
+    console.log(...data);
+  if(config.log.db && )
+
   },
+
   info: (...data) => {
-    return new Promise((resolve, reject) => {
-      console.info(getColor("info"), ...data);
-      resolve({});
-    });
+    if(config.info.console)
+    console.info(getColor("info"), ...data);
+  if(config.info.db && )
+
   },
+
   warn: (...data) => {
-    return new Promise((resolve, reject) => {
-      console.warn(getColor("warn"), ...data);
-      resolve({});
-    });
+    if(config.warn.console)
+    console.warn(getColor("warn"), ...data);
+  if(config.warn.db && )
+
   },
+
   error: (...data) => {
-    return new Promise((resolve, reject) => {
-      console.error(getColor("error"), ...data);
-      resolve({});
-    });
+    if(config.error.console)
+    console.error(getColor("error"), ...data);
+  if(config.error.db && )
+
   }
 }
 
