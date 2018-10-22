@@ -21,31 +21,34 @@ function getColor(level){
 
 let looo = {
   log: (...data) => {
-    if(config.log.console)
-    console.log(...data);
-  if(config.log.db && )
+    if(config.options.log.console)
+      console.log(...data);
+    if(config.options.log.db)
+      console.log('logging log to db');
 
   },
 
   info: (...data) => {
-    if(config.info.console)
-    console.info(getColor("info"), ...data);
-  if(config.info.db && )
+    if(config.options.info.console)
+      console.info(getColor("info"), ...data);
+    if(config.options.info.db)
+      console.log('logging info to db');
 
   },
 
   warn: (...data) => {
-    if(config.warn.console)
-    console.warn(getColor("warn"), ...data);
-  if(config.warn.db && )
+    if(config.options.warn.console)
+      console.warn(getColor("warn"), ...data);
+    if(config.options.warn.db)
+      console.log('logging warn to db');
 
   },
 
   error: (...data) => {
-    if(config.error.console)
-    console.error(getColor("error"), ...data);
-  if(config.error.db && )
-
+    if(config.options.error.console)
+      console.error(getColor("error"), ...data);
+    if(config.options.error.db)
+      console.log('logging error to db');
   }
 }
 
