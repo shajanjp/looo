@@ -1,0 +1,20 @@
+{
+  "options": {
+    "log": {
+      "console": 1,
+      "db": 1
+    },
+    "info": {
+      "console": 1,
+      "db": 1
+    },
+    "warn": {
+      "console": 1,
+      "db": 1
+    },
+    "error": {
+      "console": 1,
+      "db": 1
+    }
+  }
+}
