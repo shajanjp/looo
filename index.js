@@ -17,7 +17,6 @@ let looo = {
         let dateFormat = new Date(log.meta.created); 
         dateFormat = `${months[dateFormat.getMonth()]} ${dateFormat.getDate()} - ${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
          log.created = dateFormat;
-         console.log('log', log);
          return log;
       })
       res.render('list', { logs: logs.find({}) });
