@@ -2,7 +2,8 @@
   "options": {
     "log": {
       "console": true,
-      "db": true
+      "db": true,
+      "hook": true
     },
     "info": {
       "console": true,
