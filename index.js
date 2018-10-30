@@ -9,14 +9,14 @@ let  months = ["January", "February", "March", "April", "May", "June", "July", "
 
 let looo = {
   db: logs,
-  express: (expressApp) => {
-    expressApp.set('view engine', 'ejs');
-    expressApp.get('/looo', (req, res) => {
+  express: (appConfig) => {
+    let looPath = appConfig.path || '/loo';
+    appConfig["app"].set('view engine', 'ejs');
+    appConfig["app"].get(looPath, (req, res) => {
       let logsData = logs.find({});
       let logsDataWithDate = logsData.map((log) => {
         let dateFormat = new Date(log.meta.created); 
-        dateFormat = `${months[dateFormat.getMonth()]} ${dateFormat.getDate()} - ${dateFormat.getHours()}:${dateFormat.getMinutes()}`;
-         log.created = dateFormat;
+        log.created = helpers.timeSince(dateFormat);
          return log;
       })
       res.render('list', { logs: logs.find({}) });
