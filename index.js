@@ -7,19 +7,24 @@ const ejs = require("ejs");
 
 let  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
+let customFunction;
+
 let looo = {
   db: logs,
-  express: (appConfig) => {
-    let looPath = appConfig.path || '/loo';
-    appConfig["app"].set('view engine', 'ejs');
-    appConfig["app"].get(looPath, (req, res) => {
-      let logsData = logs.find({});
-      let logsDataWithDate = logsData.map((log) => {
-        let dateFormat = new Date(log.meta.created); 
-        log.created = helpers.timeSince(dateFormat);
+
+  config: (configData) => {
+    customFunction = configData.hook;
+    let looPath = configData["express"].path || '/looo';
+    configData["express"]["app"].set('view engine', 'ejs');
+    configData["express"]["app"].get(looPath, (req, res) => {
+      let limit = parseInt(req.query.limit) || 20;
+      let offset = parseInt(req.query.skip) || 0;
+      let logsDataWithDate = [];
+      logsDataWithDate = logs.chain().find({}).offset(offset).limit(limit).data().map((log) => {
+        log.created = helpers.timeSince(new Date(log.meta.created));
          return log;
-      })
-      res.render('list', { logs: logs.find({}) });
+      });
+      res.render('list', { logs: logsDataWithDate });
     });
   },
 
@@ -28,6 +33,8 @@ let looo = {
       console.log(...data);
     if(config.options.log.db)
       logs.insert( { level : 'log', data: data } );
+    if(typeof customFunction == 'function' && config.options.log.hook)
+      customFunction({ level: 'log', data: data })
   },
 
   info: (...data) => {
@@ -35,6 +42,8 @@ let looo = {
       console.info(helpers.getColor("info"), ...data, "\x1b[0m");
     if(config.options.info.db)
       logs.insert( { level : 'info', data: data } );
+    if(typeof customFunction == 'function' && config.options.info.hook)
+      customFunction({ level: 'info', data: data })
   },
 
   warn: (...data) => {
@@ -42,6 +51,8 @@ let looo = {
       console.warn(helpers.getColor("warn"), ...data, "\x1b[0m");
     if(config.options.warn.db)
       logs.insert( { level : 'warn', data: data } );
+    if(typeof customFunction == 'function' && config.options.warn.hook)
+      customFunction({ level: 'warn', data: data })
   },
 
   error: (...data) => {
@@ -49,6 +60,8 @@ let looo = {
       console.error(helpers.getColor("error"), ...data, "\x1b[0m");
     if(config.options.error.db)
       logs.insert( { level : 'error', data: data } );
+    if(typeof customFunction == 'function' && config.options.error.hook)
+      customFunction({ level: 'error', data: data })
   }
 }
 
