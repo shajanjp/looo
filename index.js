@@ -17,9 +17,9 @@ let looo = {
     if(configData.express && configData.express.app){ 
       let looPath = configData["express"].path || '/looo';
       configData["express"]["app"].set('view engine', 'ejs');
-      configData["express"]["app"].get(looPath, renderHelpers.renderLogsList);
+      configData["express"]["app"].get(looPath, (req, res) =>{ renderHelpers.renderLogsList(req, res, logs) });
     }
-    
+
   },
 
   log: (...data) => {
@@ -60,4 +60,4 @@ let looo = {
 }
 
 global.looo = looo;
-module.exports = looo
+module.exports = looo;
