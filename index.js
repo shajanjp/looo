@@ -27,7 +27,7 @@ let looo = {
       console.log(...data);
     if(config.options.log.db)
       logs.insert( { level : 'log', data: data } );
-    if(typeof customFunction == 'function' && config.options.log.hook)
+    if(config.options.log.hook && typeof customFunction == 'function')
       customFunction({ level: 'log', data: data })
   },
 
@@ -36,7 +36,7 @@ let looo = {
       console.info(helpers.getColor("info"), ...data, "\x1b[0m");
     if(config.options.info.db)
       logs.insert( { level : 'info', data: data } );
-    if(typeof customFunction == 'function' && config.options.info.hook)
+    if(config.options.info.hook && typeof customFunction == 'function')
       customFunction({ level: 'info', data: data })
   },
 
@@ -45,7 +45,7 @@ let looo = {
       console.warn(helpers.getColor("warn"), ...data, "\x1b[0m");
     if(config.options.warn.db)
       logs.insert( { level : 'warn', data: data } );
-    if(typeof customFunction == 'function' && config.options.warn.hook)
+    if(config.options.warn.hook && typeof customFunction == 'function')
       customFunction({ level: 'warn', data: data })
   },
 
@@ -54,7 +54,7 @@ let looo = {
       console.error(helpers.getColor("error"), ...data, "\x1b[0m");
     if(config.options.error.db)
       logs.insert( { level : 'error', data: data } );
-    if(typeof customFunction == 'function' && config.options.error.hook)
+    if(config.options.error.hook && typeof customFunction == 'function')
       customFunction({ level: 'error', data: data })
   }
 }
