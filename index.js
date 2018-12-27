@@ -1,11 +1,10 @@
+global.APP_ROOT = __dirname.replace('/index.js', '');
 const config = require('./sample-config.json');
 const loki = require('lokijs');
 const db = new loki('looo.json');
 const logs = db.addCollection('logs');
 const helpers = require('./lib/helpers.js');
 const renderHelpers = require('./lib/render.js');
-const ejs = require("ejs");
-
 let customFunction;
 
 let looo = {
@@ -13,10 +12,9 @@ let looo = {
 
   config: (configData) => {
     customFunction = configData.hook;
-    
+
     if(configData.express && configData.express.app){ 
       let looPath = configData["express"].path || '/looo';
-      configData["express"]["app"].set('view engine', 'ejs');
       configData["express"]["app"].get(looPath, (req, res) =>{ renderHelpers.renderLogsList(req, res, logs) });
     }
 
