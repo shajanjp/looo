@@ -6,11 +6,16 @@ const helpers = require('./lib/helpers.js');
 const renderHelpers = require('./lib/render.js');
 let customFunction;
 
+const getValue = (o, p) =>{
+  return p.reduce((xs, x) =>
+    (xs && xs[x]) ? xs[x] : null, o);
+}
+
 let looo = {
   db: logs,
 
   config: (configData) => {
-    options = configData.options;
+    options = configData.options || {};
     customFunction = configData.hook;
 
     if(configData.express && configData.express.app){ 
@@ -21,38 +26,38 @@ let looo = {
   },
 
   log: (...data) => {
-    if(options.log.console)
+    if(getValue(options, ["log", "console"]))
       console.log(...data);
-    if(options.log.db)
+    if(getValue(options, ["log", "db"]))
       logs.insert( { level : 'log', data: data } );
-    if(options.log.hook && typeof customFunction == 'function')
+    if(getValue(options, ["log", "hook"]) && typeof customFunction == 'function')
       customFunction({ level: 'log', data: data })
   },
 
   info: (...data) => {
-    if(options.info.console)
+    if(getValue(options, ["info", "console"]))
       console.info(helpers.getColor("info"), ...data, "\x1b[0m");
-    if(options.info.db)
+    if(getValue(options, ["info", "db"]))
       logs.insert( { level : 'info', data: data } );
-    if(options.info.hook && typeof customFunction == 'function')
+    if(getValue(options, ["info", "hook"]) && typeof customFunction == 'function')
       customFunction({ level: 'info', data: data })
   },
 
   warn: (...data) => {
-    if(options.warn.console)
+    if(getValue(options, ["warn", "console"]))
       console.warn(helpers.getColor("warn"), ...data, "\x1b[0m");
-    if(options.warn.db)
+    if(getValue(options, ["warn", "db"]))
       logs.insert( { level : 'warn', data: data } );
-    if(options.warn.hook && typeof customFunction == 'function')
+    if(getValue(options, ["warn", "hook"]) && typeof customFunction == 'function')
       customFunction({ level: 'warn', data: data })
   },
 
   error: (...data) => {
-    if(options.error.console)
+    if(getValue(options, ["error", "console"]))
       console.error(helpers.getColor("error"), ...data, "\x1b[0m");
-    if(options.error.db)
+    if(getValue(options, ["error", "db"]))
       logs.insert( { level : 'error', data: data } );
-    if(options.error.hook && typeof customFunction == 'function')
+    if(getValue(options, ["error", "hook"]) && typeof customFunction == 'function')
       customFunction({ level: 'error', data: data })
   }
 }
