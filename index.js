@@ -3,9 +3,8 @@ const loki = require('lokijs');
 const db = new loki('looo.json');
 const logs = db.addCollection('logs');
 const helpers = require('./lib/helpers.js');
+const renderHelpers = require('./lib/render.js');
 const ejs = require("ejs");
-
-let  months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 let customFunction;
 
@@ -14,18 +13,13 @@ let looo = {
 
   config: (configData) => {
     customFunction = configData.hook;
-    let looPath = configData["express"].path || '/looo';
-    configData["express"]["app"].set('view engine', 'ejs');
-    configData["express"]["app"].get(looPath, (req, res) => {
-      let limit = parseInt(req.query.limit) || 20;
-      let offset = parseInt(req.query.skip) || 0;
-      let logsDataWithDate = [];
-      logsDataWithDate = logs.chain().find({}).offset(offset).limit(limit).data().map((log) => {
-        log.created = helpers.timeSince(new Date(log.meta.created));
-         return log;
-      });
-      res.render('list', { logs: logsDataWithDate });
-    });
+    
+    if(configData.express && configData.express.app){ 
+      let looPath = configData["express"].path || '/looo';
+      configData["express"]["app"].set('view engine', 'ejs');
+      configData["express"]["app"].get(looPath, renderHelpers.renderLogsList);
+    }
+    
   },
 
   log: (...data) => {
