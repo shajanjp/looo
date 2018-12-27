@@ -5,16 +5,14 @@
       "db": true
     },
     "info": {
-      "console": true,
-      "db": true
+      "console": true
     },
     "warn": {
-      "console": true,
-      "db": true
+      "console": true
     },
     "error": {
       "console": true,
-      "db": true
+      "hook": true
     }
   }
 }
